@@ -32,9 +32,7 @@ $course = $DB->get_record('course', ['id' => $id], '*', MUST_EXIST);
 require_course_login($course);
 
 $coursecontext = context_course::instance($course->id);
-$event = \mod_subsection\event\course_module_instance_list_viewed::create(array(
-    'context' => $coursecontext
-));
+$event = \mod_subsection\event\course_module_instance_list_viewed::create(['context' => $coursecontext]);
 $event->add_record_snapshot('course', $course);
 $event->trigger();
 
@@ -73,7 +71,7 @@ foreach ($subsections as $subsection) {
         $link = html_writer::link(
             new moodle_url('/mod/subsection/view.php', ['id' => $subsection->coursemodule]),
             format_string($subsection->name, true),
-            ['class' => 'dimmed')];
+            ['class' => 'dimmed']);
     } else {
         $link = html_writer::link(
             new moodle_url('/mod/subsection/view.php', ['id' => $subsection->coursemodule]),

@@ -26,7 +26,7 @@
  * Return if the plugin supports $feature.
  *
  * @param string $feature Constant representing the feature.
- * @return true | null True if the feature is supported, null otherwise.
+ * @return mixed True if module supports feature, false if not, null if doesn't know or string for the module purpose.
  */
 function subsection_supports($feature) {
     switch($feature) {
@@ -137,7 +137,7 @@ function subsection_get_file_areas($course, $cm, $context) {
  * @param int $itemid
  * @param string $filepath
  * @param string $filename
- * @return file_info Instance or null if not found.
+ * @return file_info|null file_info instance or null if not found.
  */
 function subsection_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
     return null;
@@ -157,7 +157,7 @@ function subsection_get_file_info($browser, $areas, $course, $cm, $context, $fil
  * @param bool $forcedownload Whether or not force download.
  * @param array $options Additional options affecting the file serving.
  */
-function subsection_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, $options = array()) {
+function subsection_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, $options = []) {
     global $DB, $CFG;
 
     if ($context->contextlevel != CONTEXT_MODULE) {
