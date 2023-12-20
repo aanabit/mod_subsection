@@ -22,6 +22,9 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+ use core_courseformat\formatactions;
+ use mod_subsection\manager;
+
 /**
  * Return if the plugin supports $feature.
  *
@@ -63,6 +66,8 @@ function subsection_add_instance($moduleinstance, $mform = null) {
 
     $id = $DB->insert_record('subsection', $moduleinstance);
 
+    formatactions::section($moduleinstance->course)->create_delegated(manager::PLUGINNAME, $id);
+
     return $id;
 }
 
@@ -97,6 +102,12 @@ function subsection_delete_instance($id) {
     $exists = $DB->get_record('subsection', ['id' => $id]);
     if (!$exists) {
         return false;
+    }
+
+    $cm = get_coursemodule_from_instance(manager::MODULE, $id);
+    $delegatesection = get_fast_modinfo($cm->course)->get_section_info_by_component(manager::PLUGINNAME, $id);
+    if ($delegatesection) {
+        formatactions::section($cm->course)->delete($delegatesection);
     }
 
     $DB->delete_records('subsection', ['id' => $id]);
