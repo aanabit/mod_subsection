@@ -16,10 +16,10 @@
 
 namespace mod_subsection\courseformat;
 
+use action_menu;
+use core_courseformat\base as course_format;
 use core_courseformat\output\local\content\section\controlmenu;
 use core_courseformat\sectiondelegatemodule;
-use core_courseformat\base as course_format;
-use action_menu;
 use mod_subsection\manager;
 use renderer_base;
 
