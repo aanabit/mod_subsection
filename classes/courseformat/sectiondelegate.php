@@ -16,7 +16,11 @@
 
 namespace mod_subsection\courseformat;
 
+use core_courseformat\formatactions;
 use core_courseformat\sectiondelegate as sectiondelegatebase;
+use core_courseformat\stateupdates;
+use mod_subsection\manager;
+use section_info;
 
 /**
  * Subsection plugin section delegate class.
@@ -26,4 +30,33 @@ use core_courseformat\sectiondelegate as sectiondelegatebase;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class sectiondelegate extends sectiondelegatebase {
+    /**
+     * Sync the section renaming with the activity name.
+     * @param section_info $section
+     * @param string|null $newname
+     * @return string|null
+     */
+    public function preprocess_section_name(section_info $section, ?string $newname): ?string {
+        global $DB;
+        $cm = get_coursemodule_from_instance(manager::MODULE, $section->itemid);
+        if (!$cm) {
+            return $newname;
+        }
+        if (empty($newname) || $newname === $cm->name) {
+            return $cm->name;
+        }
+        formatactions::cm($section->course)->rename($cm->id, $newname);
+        return $newname;
+    }
+
+    /**
+     * Add extra state updates when put or create a section.
+     *
+     * @param section_info $section the affected section.
+     * @param stateupdates $updates the state updates object to notify the UI.
+     */
+    public function put_section_state_extra_updates(section_info $section, stateupdates $updates): void {
+        $cm = get_coursemodule_from_instance(manager::MODULE, $section->itemid);
+        $updates->add_cm_put($cm->id);
+    }
 }
