@@ -14,15 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-use mod_subsection\manager;
-
-defined('MOODLE_INTERNAL') || die();
-
-
 /**
  * Data generator class for mod_subsection.
  *
- * @package    mod_data
+ * @package    mod_subsection
  * @category   test
  * @copyright  2023 Ferran Recio <ferran@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

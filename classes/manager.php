@@ -93,6 +93,20 @@ class manager {
     }
 
     /**
+     * Create a manager instance from a record id.
+     *
+     * @param int $courseid the course id
+     * @param int $id an activity id
+     * @return manager
+     */
+    public static function create_from_id(int $courseid, int $id): self {
+        global $DB;
+
+        $cm = get_coursemodule_from_instance('subsection', $id, $courseid);
+        return self::create_from_coursemodule($cm);
+    }
+
+    /**
      * Create a manager instance from a subsection_record entry.
      *
      * @param stdClass $record the subsection_record record
