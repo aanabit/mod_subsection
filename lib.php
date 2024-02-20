@@ -66,7 +66,12 @@ function subsection_add_instance($moduleinstance, $mform = null) {
 
     $id = $DB->insert_record('subsection', $moduleinstance);
 
-    formatactions::section($moduleinstance->course)->create_delegated(manager::PLUGINNAME, $id);
+    formatactions::section($moduleinstance->course)->create_delegated(
+        manager::PLUGINNAME,
+        $id,
+        (object)[
+            'name' => $moduleinstance->name,
+        ]);
 
     return $id;
 }

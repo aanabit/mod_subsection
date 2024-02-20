@@ -39,13 +39,10 @@ require_login($course, true, $cm);
 $modulecontext = $manager->get_context();
 $manager->set_module_viewed($course);
 
-$PAGE->set_url('/mod/subsection/view.php', ['id' => $cm->id]);
-$PAGE->set_title(format_string($moduleinstance->name));
-$PAGE->set_heading(format_string($course->fullname));
-$PAGE->set_context($modulecontext);
+$modinfo = get_fast_modinfo($course);
 
-$renderer = $manager->get_renderer();
-
-echo $OUTPUT->header();
-echo $OUTPUT->box($moduleinstance->name, "generalbox center clearfix");
-echo $OUTPUT->footer();
+$delegatesection = $modinfo->get_section_info_by_component(manager::PLUGINNAME, $moduleinstance->id);
+if (!$delegatesection) {
+    throw new coding_exception('Section not found');
+}
+redirect(new moodle_url('/course/section.php', ['id' => $delegatesection->id]));
