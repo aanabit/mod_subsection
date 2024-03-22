@@ -25,7 +25,7 @@ Feature: Teachers create and destroy subsections
     Then "Subsection1" "section" should not exist
     And I should not see "Subactivity1" in the "region-main" "region"
     And I click on "Subsection1" "link" in the "region-main" "region"
-    And I should see "Subsection1" in the "region-main" "region"
+    And I should see "Subsection1" in the "page" "region"
     And I should see "Subactivity1" in the "region-main" "region"
 
   Scenario: Activities can be created in a subsection
