@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
+use mod_subsection\manager;
+
 /**
  * All the steps to restore mod_subsection are defined here.
  *
@@ -54,6 +56,7 @@ class restore_subsection_activity_structure_step extends restore_activity_struct
         $newitemid = $DB->insert_record('subsection', $data);
         // immediately after inserting "activity" record, call this
         $this->apply_activity_instance($newitemid);
+        $this->set_delegated_section_mapping(manager::PLUGINNAME, $oldid, $newitemid);
     }
 
     /**

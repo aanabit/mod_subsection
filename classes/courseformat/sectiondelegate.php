@@ -17,7 +17,7 @@
 namespace mod_subsection\courseformat;
 
 use core_courseformat\formatactions;
-use core_courseformat\sectiondelegate as sectiondelegatebase;
+use core_courseformat\sectiondelegatemodule;
 use core_courseformat\stateupdates;
 use mod_subsection\manager;
 use section_info;
@@ -29,7 +29,7 @@ use section_info;
  * @copyright  2023 Ferran Recio <ferran@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class sectiondelegate extends sectiondelegatebase {
+class sectiondelegate extends sectiondelegatemodule {
     /**
      * Sync the section renaming with the activity name.
      * @param section_info $section
