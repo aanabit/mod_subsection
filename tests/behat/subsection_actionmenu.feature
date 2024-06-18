@@ -23,11 +23,29 @@ Feature: The module menu replaces the section menu when accessing the subsection
     And I am on the "C1" "Course" page logged in as "teacher1"
 
   @javascript
-  Scenario: The action menu for subsection meets the module menu
+  Scenario: The action menu for subsection page meets the module menu
     Given I click on "Subsection1" "link" in the "region-main" "region"
     And I turn editing mode on
     # Open the action menu.
     When I click on "Edit" "icon" in the "[data-region='header-actions-container']" "css_element"
-    Then I should see "Move right"
-    And I should see "Assign roles"
-    But I should not see "Highlight"
+    Then I should not see "Move right"
+    And I should not see "Assign roles"
+    And I should not see "Permalink"
+    And I should not see "Highlight"
+    And I should see "Edit settings"
+    And I should see "Move"
+    And I should see "Hide"
+    And I should see "Duplicate"
+    And I should see "Delete"
+
+  @javascript
+  Scenario: The action menu for subsection module has less options thant a regular activity
+    Given I turn editing mode on
+    When I open "Subsection1" actions menu
+    Then I should not see "Move right"
+    And I should not see "Assign roles"
+    And I should see "Edit settings"
+    And I should see "Move"
+    And I should see "Hide"
+    And I should see "Duplicate"
+    And I should see "Delete"
