@@ -28,6 +28,6 @@ Feature: The module menu replaces the section menu when accessing the subsection
     And I turn editing mode on
     # Open the action menu.
     When I click on "Edit" "icon" in the "[data-region='header-actions-container']" "css_element"
-    Then I should see "Move right"
-    And I should see "Assign roles"
+    Then I should not see "Move right"
+    And I should not see "Assign roles"
     But I should not see "Highlight"
