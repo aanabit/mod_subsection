@@ -23,6 +23,8 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use mod_subsection\manager;
+
 // More information about the restore process: {@link https://docs.moodle.org/dev/Restore_API}.
 
 /**
@@ -54,6 +56,7 @@ class restore_subsection_activity_structure_step extends restore_activity_struct
         $newitemid = $DB->insert_record('subsection', $data);
         // immediately after inserting "activity" record, call this
         $this->apply_activity_instance($newitemid);
+        $this->set_delegated_section_mapping(manager::PLUGINNAME, $oldid, $newitemid);
     }
 
     /**

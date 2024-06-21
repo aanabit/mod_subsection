@@ -43,6 +43,14 @@ $modinfo = get_fast_modinfo($course);
 
 $delegatesection = $modinfo->get_section_info_by_component(manager::PLUGINNAME, $moduleinstance->id);
 if (!$delegatesection) {
-    throw new coding_exception('Section not found');
+    // Some restorations can produce a situation where the section is not found.
+    // In that case, we create a new one.
+    formatactions::section($course)->create_delegated(
+        manager::PLUGINNAME,
+        $id,
+        (object) [
+            'name' => $moduleinstance->name,
+        ]
+    );
 }
 redirect(new moodle_url('/course/section.php', ['id' => $delegatesection->id]));
