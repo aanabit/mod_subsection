@@ -22,8 +22,8 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
- use core_courseformat\formatactions;
- use mod_subsection\manager;
+use core_courseformat\formatactions;
+use mod_subsection\manager;
 
 /**
  * Return if the plugin supports $feature.
@@ -207,4 +207,45 @@ function subsection_extend_navigation($subsectionnode, $course, $module, $cm) {
  * @param navigation_node $subsectionnode {@see navigation_node}
  */
 function subsection_extend_settings_navigation($settingsnav, $subsectionnode = null) {
+}
+
+/**
+ * Sets dynamic information about a course module
+ *
+ * This function is called from cm_info when displaying the module
+ * mod_folder can be displayed inline on course page and therefore have no course link
+ *
+ * @param cm_info $cm
+ */
+function subsection_cm_info_dynamic(cm_info $cm) {
+    // TODO: This hides the activity card name, but we need the module URL. This is a temporary solution.
+    $cm->set_no_view_link();
+}
+
+/**
+ * Sets the special subsection display on course page.
+ *
+ * @param cm_info $cm Course-module object
+ */
+function subsection_cm_info_view(cm_info $cm) {
+    global $DB, $PAGE;
+
+    $cm->set_custom_cmlist_item(true);
+    $cm->set_hidden_actions(true);
+
+    // Get the section info.
+    $manager = manager::create_from_coursemodule($cm);
+    $moduleinstance = $manager->get_instance();
+    $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
+    $modinfo = get_fast_modinfo($course);
+    $delegatesection = $modinfo->get_section_info_by_component(manager::PLUGINNAME, $moduleinstance->id);
+
+    // Render the delegated section.
+    $format = course_get_format($course);
+    $renderer = $PAGE->get_renderer('format_' . $course->format);
+    $outputclass = $format->get_output_classname('content\\delegatedsection');
+    /** @var \core_courseformat\output\local\content\section */
+    $delegatedsectionoutput = new $outputclass($format, $delegatesection);
+
+    $cm->set_content($renderer->render($delegatedsectionoutput), true);
 }
